@@ -243,24 +243,31 @@ error:
 ; An alternative is to switch bpl to bcs everywhere which allows a slightly larger stack.
 ; However in that case dsp0 must be at most $f0 or these tests will fail in unexpected ways.
 ; See discussion in https://github.com/SamCoVT/TaliForth2/issues/148
+cpx_dsp0 .macro
+.if dsp0 > $7F
+                cpx #dsp0-\1
+.else
+                cpx #+dsp0-\1
+.endif
+.endmacro
 underflow_1:
         ; """Make sure we have at least one cell on the Data Stack"""
-                cpx #dsp0-1
+                cpx_dsp0 1
                 bpl underflow_error
                 rts
 underflow_2:
         ; """Make sure we have at least two cells on the Data Stack"""
-                cpx #dsp0-3
+                cpx_dsp0 3
                 bpl underflow_error
                 rts
 underflow_3:
         ; """Make sure we have at least three cells on the Data Stack"""
-                cpx #dsp0-5
+                cpx_dsp0 5
                 bpl underflow_error
                 rts
 underflow_4:
         ; """Make sure we have at least four cells on the Data Stack"""
-                cpx #dsp0-7
+                cpx_dsp0 7
                 bpl underflow_error
                 rts
 

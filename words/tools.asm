@@ -59,7 +59,11 @@ w_dot_s:
                 ; from bottom to top
                 ply
 
+.if dsp0 > $7F
                 lda #dsp0-1     ; go up one to avoid garbage
+.else
+                lda #+dsp0-1     ; go up one to avoid garbage
+.endif
                 sta tmp3
                 stz tmp3+1      ; must be zero page on the 65c02
 _loop:
